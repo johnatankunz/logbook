@@ -43,24 +43,15 @@ public class MarcacaoVinculoInicioFimService {
 
 		List<LogBookDTO> listLogBook = new ArrayList<>();
 		LogBookDTO logBook = null;
-		int i = 0;
 
 		for (MarcacaoVinculoInicioFim objVinculo : listVinculo) {
-			i++;
 
-			if (i == 1) {
+			if (logBook == null || !logBook.getDia().equals(objVinculo.getMarcacaoInicio().getDataHoraMarcacao().toLocalDate())) {
 				logBook = createLogBook(logBook, objVinculo);
-				logBook = createPeriod(logBook, objVinculo, logBookDescription);
+				
 				listLogBook.add(logBook);
-			} else {
-				if (logBook.getDia().equals(objVinculo.getMarcacaoInicio().getDataHoraMarcacao().toLocalDate())) {
-					logBook = createPeriod(logBook, objVinculo, logBookDescription);
-				} else {
-					logBook = createLogBook(logBook, objVinculo);
-					logBook = createPeriod(logBook, objVinculo, logBookDescription);
-					listLogBook.add(logBook);
-				}
-			}
+			} 
+			logBook = createPeriod(logBook, objVinculo, logBookDescription);
 		}
 
 		logBookDescription.setLogBook(listLogBook);
